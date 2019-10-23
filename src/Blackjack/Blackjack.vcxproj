@@ -90,6 +90,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,6 +124,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="carta.h" />
+    <ClInclude Include="dealer.h" />
+    <ClInclude Include="juego.h" />
+    <ClInclude Include="jugador.h" />
+    <ClInclude Include="lista.h" />
+    <ClInclude Include="mano.h" />
+    <ClInclude Include="mazo.h" />
+    <ClInclude Include="nodo.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="carta.cpp" />
+    <ClCompile Include="dealer.cpp" />
+    <ClCompile Include="juego.cpp" />
+    <ClCompile Include="jugador.cpp" />
+    <ClCompile Include="lista.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mano.cpp" />
+    <ClCompile Include="mazo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
