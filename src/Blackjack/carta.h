@@ -1,6 +1,3 @@
-// carta.h
-// Declaración de la clase Carta
-
 #ifndef CARTA_H
 #define CARTA_H
 
