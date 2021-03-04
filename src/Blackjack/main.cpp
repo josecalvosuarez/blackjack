@@ -5,8 +5,8 @@
 
 int main() {
 
-	Juego J;
-	J.run();
+	Juego juego;
+	juego.run();
 	
 	return 0;
 }
