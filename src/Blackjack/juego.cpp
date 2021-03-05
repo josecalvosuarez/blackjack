@@ -12,7 +12,7 @@ void Juego::run() {
 	menuPrincipal();
 }
 
-void Juego::intro(){
+void Juego::intro() {
 	HANDLE consola = GetStdHandle(STD_OUTPUT_HANDLE);
 	WORD consolaAttr;
 
@@ -29,27 +29,27 @@ void Juego::intro(){
 		PlaySound(TEXT("Media/intro.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
 		do {
-			system("cls");
+			limpiar();
 
 			if (i > NUM_COLORES)
 				i = 1;
 
 			SetConsoleTextAttribute(consola, i++);
 
-			std::cout << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl << std::endl;
-			std::cout <<
-				"\t\t.------..------..------..------..------..------..------..------..------." << std::endl <<
-				"\t\t|B.--. ||L.--. ||A.--. ||C.--. ||K.--. ||J.--. ||A.--. ||C.--. ||K.--. |" << std::endl <<
-				"\t\t| :(): || :/\\: || (\\/) || :/\\: || :/\\: || :(): || (\\/) || :/\\: || :/\\: |" << std::endl <<
-				"\t\t| ()() || (__) || :\\/: || :\\/: || :\\/: || ()() || :\\/: || :\\/: || :\\/: |" << std::endl <<
-				"\t\t| '--'B|| '--'L|| '--'A|| '--'C|| '--'K|| '--'J|| '--'A|| '--'C|| '--'K|" << std::endl <<
-				"\t\t`------'`------'`------'`------'`------'`------'`------'`------'`------'";
-			std::cout << std::endl << std::endl << std::endl;
+			imprimir("\n\n\n\n\n\n\n");
+			imprimir("\t\t.------..------..------..------..------..------..------..------..------. \n");
+			imprimir("\t\t|B.--. ||L.--. ||A.--. ||C.--. ||K.--. ||J.--. ||A.--. ||C.--. ||K.--. | \n");
+			imprimir("\t\t| :(): || :/\\: || (\\/) || :/\\: || :/\\: || :(): || (\\/) || :/\\: || :/\\: | \n");
+			imprimir("\t\t| ()() || (__) || :\\/: || :\\/: || :\\/: || ()() || :\\/: || :\\/: || :\\/: | \n");
+			imprimir("\t\t| '--'B|| '--'L|| '--'A|| '--'C|| '--'K|| '--'J|| '--'A|| '--'C|| '--'K| \n");
+			imprimir("\t\t`------'`------'`------'`------'`------'`------'`------'`------'`------' \n");
+			imprimir("\n\n\n");
 
 			SetConsoleTextAttribute(consola, consolaAttr);
-			std::cout << "\t\tPRESIONE ENTER PARA CONTINUAR...";
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(200));
+			imprimir("\t\t PRESIONE ENTER PARA CONTINUAR... \n");
+
+			sleep(200);
 
 			if (GetAsyncKeyState(VK_RETURN))
 				salir = true;
@@ -62,32 +62,29 @@ void Juego::intro(){
 }
 
 void Juego::menuPrincipal() {
-	char opcion;
+	int opcion;
 	bool salir = false;
 
 	while (!salir) {
-		do {
-			system("cls");
-			
-			std::cout << "  -----------------------------" << std::endl;
-			std::cout << "  1. NUEVA PARTIDA DE BLACKJACK" << std::endl;
-			std::cout << "  2. CARGAR PARTIDA" << std::endl;
-			std::cout << "  3. SALIR" << std::endl;
-			std::cout << "  -----------------------------" << std::endl;
-			std::cout << "         Opcion: ";
+		limpiar();
 
-			std::cin.get(opcion);
+		imprimir("  ----------------------------- \n");
+		imprimir("  1. NUEVA PARTIDA DE BLACKJACK \n");
+		imprimir("  2. CARGAR PARTIDA \n");
+		imprimir("  3. SALIR \n");
+		imprimir("  ----------------------------- \n");
+		imprimir("  OPCION: "); 
 
-		} while (opcion < '1' || opcion > '3');
+		opcion = getEnteroEntre(1, 3);
 
 		switch (opcion) {
-		case '1':
+		case 1:
 			nuevoJuego();
 			break;
-		case '2':
+		case 2:
 			// cargarJuego();
 			break;
-		case '3':
+		case 3:
 			salir = true;
 			break;
 		}
@@ -97,41 +94,28 @@ void Juego::menuPrincipal() {
 void Juego::nuevoJuego() {
 	obtenerJugadores();
 	repartirCartas();
-	mostrarMesa();	
-} 
+	mostrarMesa();
+}
 
 void Juego::obtenerJugadores() {
-	int numJugadores;
 	std::string nombreJugador;
 
 	listaJugadores = new Lista();
-	   
-	std::cin.ignore();
-	std::cin.clear();
 
-	do {
-		system("cls");
-
-		std::cout << "  ---------------------------------" << std::endl;
-		std::cout << "  DIGITE LA CANTIDAD DE JUGADORES ( 1 - 7 ): ";
-
-		std::cin >> numJugadores;
-
-	} while (numJugadores < 1 || numJugadores > 7 || isalpha(numJugadores));
-
-	system("cls");
-
-	std::cin.ignore();
-	std::cin.clear();
+	limpiar();
+	imprimir("  --------------------------------- \n");
+	imprimir("  DIGITE LA CANTIDAD DE JUGADORES ( 1 - 7 ): ");
+	int numJugadores = getEnteroEntre(1, 7);
+	limpiar();
 
 	for (int i = 1; i <= numJugadores; ++i) {
-		std::cout << "DIGITE EL NOMBRE DEL JUGADOR #" << i << ": ";
-		std::getline(std::cin, nombreJugador);
+		imprimir("  DIGITE EL NOMBRE DEL JUGADOR #" + convertirCadena(i) + ": ");
+		nombreJugador = getCadena();
 
 		JugadorGenerico* nuevoJugador = new Jugador(nombreJugador, false);
 		listaJugadores->insertarElemento(nuevoJugador);
 
-		std::cout << std::endl << std::endl;
+		imprimir("\n\n");
 	}
 
 	JugadorGenerico* laCasa = new Dealer("LA CASA", false, false);
@@ -150,88 +134,88 @@ void Juego::repartirCartas() {
 }
 
 void Juego::mostrarMesa() {
-	system("cls");
-
 	Lista::iterador tmp = listaJugadores->getInicio();
 	Carta** mano;
 
+	limpiar();
 	while (tmp) {
-		std::cout << "----------------------" << std::endl;
-		std::cout << tmp->getDato()->getNickname() << std::endl;
+		imprimir(" ---------------------- \n");
+		imprimir(tmp->getDato()->getNickname() + "\n");
+
 		mano = tmp->getDato()->getManoJugador()->getMano();
 		int cartasMano = tmp->getDato()->getManoJugador()->getCantidad();
 		for (int i = 0; i < cartasMano; ++i)
 			dibujarCarta(mano[i]);
 		tmp = tmp->getNext();
-		std::cout << std::endl;
+
+		imprimir("\n");
 	}
 
-	std::cin.get();
+	pausa();
 }
 
 void Juego::dibujarCarta(Carta* c) {
 	if (!c->estaBocaArriba()) {
-		std::cout <<
-			"\t\t.--------. " << std::endl <<
-			"\t\t|XXXXXXXX| " << std::endl <<
-			"\t\t|XXXXXXXX| " << std::endl <<
-			"\t\t|XXXXXXXX| " << std::endl <<
-			"\t\t|XXXXXXXX| " << std::endl <<
-			"\t\t`--------' ";
+		imprimir("\t\t.--------. \n");
+		imprimir("\t\t|XXXXXXXX| \n");
+		imprimir("\t\t|XXXXXXXX| \n");
+		imprimir("\t\t|XXXXXXXX| \n");
+		imprimir("\t\t|XXXXXXXX| \n");
+		imprimir("\t\t'--------' \n");
+
+		return;
 	}
-	else {
-		Rango valorOriginal = c->getValor();
-		char rango;
 
-		if (valorOriginal == Rango::AS)
-			rango = 'A';
-		else if (valorOriginal == Rango::J)
-			rango = 'J';
-		else if (valorOriginal == Rango::Q)
-			rango = 'Q';
-		else if (valorOriginal == Rango::K)
-			rango = 'K';
-		else
-			rango = static_cast<char>(valorOriginal) + '0';
+	Rango valorOriginal = c->getValor();
+	char rango;
 
+	if (valorOriginal == Rango::AS)
+		rango = 'A';
+	else if (valorOriginal == Rango::J)
+		rango = 'J';
+	else if (valorOriginal == Rango::Q)
+		rango = 'Q';
+	else if (valorOriginal == Rango::K)
+		rango = 'K';
+	else
+		rango = static_cast<char>(valorOriginal) + '0';
 
-		switch (c->getPalo()) {
-		case Palo::TREBOLES:
-			std::cout <<
-				"\t\t.--------. " << std::endl <<
-				"\t\t|" << rango << " .--.  | " << std::endl <<
-				"\t\t|  :():  | " << std::endl <<
-				"\t\t|  ()()  | " << std::endl <<
-				"\t\t|  '--'" << rango << " | " << std::endl <<
-				"\t\t`--------' " << std::endl;
-			break;
-		case Palo::CORAZONES:
-			std::cout <<
-				"\t\t.--------. " << std::endl <<
-				"\t\t|" << rango << " .--.  | " << std::endl <<
-				"\t\t|  (\\/)  | " << std::endl <<
-				"\t\t|  :\\/:  | " << std::endl <<
-				"\t\t|  '--'" << rango << " | " << std::endl <<
-				"\t\t`--------' " << std::endl;
-			break;
-		case Palo::ESPADAS:
-			std::cout <<
-				"\t\t.--------. " << std::endl <<
-				"\t\t|" << rango << " .--.  | " << std::endl <<
-				"\t\t|  :/\\:  | " << std::endl <<
-				"\t\t|  (__)  | " << std::endl <<
-				"\t\t|  '--'" << rango << " | " << std::endl <<
-				"\t\t`--------' " << std::endl;
-			break;
-		case Palo::DIAMANTES:
-			std::cout <<
-				"\t\t.--------. " << std::endl <<
-				"\t\t|" << rango << " .--.  | " << std::endl <<
-				"\t\t|  :/\\:  | " << std::endl <<
-				"\t\t|  :\\/:  | " << std::endl <<
-				"\t\t|  '--'" << rango << " | " << std::endl <<
-				"\t\t`--------' " << std::endl;
-			break;
-		}
+	switch (c->getPalo()) {
+	case Palo::TREBOLES:
+		imprimir("\t\t.--------. \n");
+		imprimir("\t\t|" + convertirCadena(rango) + " .--.  | \n");
+		imprimir("\t\t|  :():  | \n");
+		imprimir("\t\t|  ()()  | \n");
+		imprimir("\t\t|  '--' " + convertirCadena(rango) + "| \n");
+		imprimir("\t\t'--------' \n");
+		break;
+
+	case Palo::CORAZONES:
+		imprimir("\t\t.--------. \n");
+		imprimir("\t\t|" + convertirCadena(rango) + " .--.  | \n");
+		imprimir("\t\t|  (\\/)  | \n");
+		imprimir("\t\t|  :\\/:  | \n");
+		imprimir("\t\t|  '--' " + convertirCadena(rango) + "| \n");
+		imprimir("\t\t'--------' \n");
+
+		break;
+	case Palo::ESPADAS:
+		imprimir("\t\t.--------. \n");
+		imprimir("\t\t|" + convertirCadena(rango) + " .--.  | \n");
+		imprimir("\t\t|  :/\\:  | \n");
+		imprimir("\t\t|  (__)  | \n");
+		imprimir("\t\t|  '--' " + convertirCadena(rango) + "| \n");
+		imprimir("\t\t'--------' \n");
+
+		break;
+	case Palo::DIAMANTES:
+		imprimir("\t\t.--------. \n");
+		imprimir("\t\t|" + convertirCadena(rango) + " .--.  | \n");
+		imprimir("\t\t|  :/\\:  | \n");
+		imprimir("\t\t|  :\\/:  | \n");
+		imprimir("\t\t|  '--' " + convertirCadena(rango) + "| \n");
+		imprimir("\t\t'--------' \n");
+
+		break;
 	}
 }

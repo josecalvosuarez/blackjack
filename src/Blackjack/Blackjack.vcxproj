@@ -133,6 +133,7 @@
     <ClInclude Include="mazo.h" />
     <ClInclude Include="nodo.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="utiles.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="carta.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mano.cpp" />
     <ClCompile Include="mazo.cpp" />
+    <ClCompile Include="utiles.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
