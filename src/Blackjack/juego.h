@@ -8,13 +8,14 @@
 
 #include <iostream>
 #include <cctype>
-#include <chrono>
-#include <thread>
 #include <windows.h>
 #include <mmsystem.h>
 #include "lista.h"
 #include "jugador.h"
 #include "dealer.h"
+
+// Agregación de útiles.
+#include "utiles.h"
 
 #define NUM_COLORES	7
 
